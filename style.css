@@ -8,32 +8,33 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #667eea, #764ba2);
     min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 20px;
+    transition: 0.3s;
 }
 
 .container {
     width: 100%;
     max-width: 500px;
-
     background: rgba(255, 255, 255, 0.95);
-
     padding: 35px;
-
     border-radius: 20px;
-
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-h1 {
+/* Header */
+
+.header {
+    position: relative;
     text-align: center;
+    margin-bottom: 8px;
+}
+
+.header h1 {
     font-size: 36px;
     color: #4f46e5;
-    margin-bottom: 8px;
 }
 
 .container > p {
@@ -42,6 +43,33 @@ h1 {
     margin-bottom: 30px;
 }
 
+/* Dark Mode Button */
+
+#darkModeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+
+    background: #111827;
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#darkModeBtn:hover {
+    transform: rotate(20deg);
+}
+
+/* Task Input */
+
 .task-input {
     display: flex;
     gap: 10px;
@@ -49,18 +77,11 @@ h1 {
 
 input {
     flex: 1;
-
     padding: 14px 16px;
-
     border: 2px solid #e5e7eb;
-
     border-radius: 10px;
-
     font-size: 15px;
-
     outline: none;
-
-    transition: 0.3s;
 }
 
 input:focus {
@@ -69,93 +90,79 @@ input:focus {
 
 .task-input button {
     padding: 14px 20px;
-
     border: none;
-
     border-radius: 10px;
-
     background: #4f46e5;
-
     color: white;
-
     font-weight: bold;
-
     cursor: pointer;
-
-    transition: 0.3s;
 }
 
 .task-input button:hover {
     background: #3730a3;
-
-    transform: translateY(-2px);
 }
+
+/* Statistics */
 
 .task-stats {
     display: flex;
-
     gap: 15px;
-
     margin: 30px 0;
 }
 
 .task-stats div {
     flex: 1;
-
     text-align: center;
-
     padding: 15px 5px;
-
     background: #f5f3ff;
-
     border-radius: 12px;
 }
 
 .task-stats h3 {
     font-size: 26px;
-
     color: #4f46e5;
 }
 
 .task-stats p {
     margin-top: 5px;
-
     font-size: 13px;
-
     color: #777;
 }
 
+/* Search */
+
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    width: 100%;
+}
+
+/* Filters */
+
 .filters {
     display: flex;
-
     gap: 10px;
-
     margin-bottom: 25px;
 }
 
 .filters button {
     flex: 1;
-
     padding: 10px;
-
     border: none;
-
     border-radius: 8px;
-
     background: #f1f1f1;
-
     color: #555;
-
     cursor: pointer;
-
-    transition: 0.3s;
 }
 
 .filters button:hover {
     background: #4f46e5;
-
     color: white;
 }
+
+/* Task List */
 
 ul {
     list-style: none;
@@ -163,24 +170,14 @@ ul {
 
 li {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     gap: 10px;
-
     background: #f8f9ff;
-
     padding: 15px;
-
     margin-bottom: 12px;
-
     border-radius: 12px;
-
     border-left: 5px solid #4f46e5;
-
-    animation: slideIn 0.3s ease;
 }
 
 li span {
@@ -189,25 +186,25 @@ li span {
 
 li div {
     display: flex;
-
     gap: 6px;
 }
 
 .complete-btn,
+.edit-btn,
 .delete-btn {
     border: none;
-
     padding: 8px 10px;
-
     border-radius: 7px;
-
     color: white;
-
     cursor: pointer;
 }
 
 .complete-btn {
     background: #22c55e;
+}
+
+.edit-btn {
+    background: #f59e0b;
 }
 
 .delete-btn {
@@ -218,34 +215,74 @@ li div {
     background: #16a34a;
 }
 
+.edit-btn:hover {
+    background: #d97706;
+}
+
 .delete-btn:hover {
     background: #dc2626;
 }
 
 .completed {
     text-decoration: line-through;
-
     color: #999;
 }
 
-@keyframes slideIn {
+/* Dark Mode */
 
-    from {
-        opacity: 0;
-
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-
+.dark-mode {
+    background: #111827;
 }
 
+.dark-mode .container {
+    background: #1f2937;
+}
 
-/* Mobile Responsive Design */
+.dark-mode .header h1 {
+    color: #a5b4fc;
+}
+
+.dark-mode .container > p {
+    color: #d1d5db;
+}
+
+.dark-mode input {
+    background: #374151;
+    color: white;
+    border-color: #4b5563;
+}
+
+.dark-mode input::placeholder {
+    color: #d1d5db;
+}
+
+.dark-mode .task-stats div {
+    background: #374151;
+}
+
+.dark-mode .task-stats p {
+    color: #d1d5db;
+}
+
+.dark-mode li {
+    background: #374151;
+}
+
+.dark-mode .filters button {
+    background: #4b5563;
+    color: white;
+}
+
+.dark-mode .filters button:hover {
+    background: #6366f1;
+}
+
+.dark-mode #darkModeBtn {
+    background: #facc15;
+    color: #111827;
+}
+
+/* Mobile Responsive */
 
 @media (max-width: 500px) {
 
@@ -253,7 +290,7 @@ li div {
         padding: 25px 20px;
     }
 
-    h1 {
+    .header h1 {
         font-size: 30px;
     }
 
