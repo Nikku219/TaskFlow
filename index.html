@@ -8,25 +8,40 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <div class="container">
 
-        <h1>TaskFlow</h1>
+        <div class="header">
+
+            <h1>TaskFlow</h1>
+
+            <button id="darkModeBtn">🌙</button>
+ 
+        </div>
 
         <p>Manage your daily tasks easily</p>
 
+
+        <!-- Add Task -->
+
         <div class="task-input">
+
             <input 
-                type="text" 
-                id="taskInput" 
+                type="text"
+                id="taskInput"
                 placeholder="Enter your task"
             >
 
             <button id="addTaskBtn">
                 Add Task
             </button>
+
         </div>
+
+
+        <!-- Task Statistics -->
 
         <div class="task-stats">
 
@@ -47,6 +62,22 @@
 
         </div>
 
+
+        <!-- Search -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 Search tasks..."
+            >
+
+        </div>
+
+
+        <!-- Filters -->
+
         <div class="filters">
 
             <button onclick="showAll()">
@@ -63,9 +94,13 @@
 
         </div>
 
+
+        <!-- Task List -->
+
         <ul id="taskList"></ul>
 
     </div>
+
 
     <script src="script.js"></script>
 
