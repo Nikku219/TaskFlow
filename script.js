@@ -1,14 +1,30 @@
 const taskInput = document.getElementById("taskInput");
+
 const addTaskBtn = document.getElementById("addTaskBtn");
+
 const taskList = document.getElementById("taskList");
+
 const totalTasks = document.getElementById("totalTasks");
+
 const completedTasks = document.getElementById("completedTasks");
+
 const pendingTasks = document.getElementById("pendingTasks");
 
-// Load saved tasks
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const searchInput = document.getElementById("searchInput");
 
-// Display tasks
+const darkModeBtn = document.getElementById("darkModeBtn");
+
+
+// Load saved tasks
+
+let tasks =
+    JSON.parse(
+        localStorage.getItem("tasks")
+    ) || [];
+
+
+// Display Tasks
+
 function displayTasks(taskArray = tasks) {
 
     taskList.innerHTML = "";
@@ -18,15 +34,19 @@ function displayTasks(taskArray = tasks) {
 
         const li = document.createElement("li");
 
+
         li.innerHTML = `
 
             <span class="${task.completed ? "completed" : ""}">
+
                 ${task.text}
+
             </span>
+
 
             <div>
 
-                <button 
+                <button
                     class="complete-btn"
                     onclick="completeTask(${tasks.indexOf(task)})">
 
@@ -34,7 +54,17 @@ function displayTasks(taskArray = tasks) {
 
                 </button>
 
-                <button 
+
+                <button
+                    class="edit-btn"
+                    onclick="editTask(${tasks.indexOf(task)})">
+
+                    ✏️
+
+                </button>
+
+
+                <button
                     class="delete-btn"
                     onclick="deleteTask(${tasks.indexOf(task)})">
 
@@ -46,19 +76,23 @@ function displayTasks(taskArray = tasks) {
 
         `;
 
+
         taskList.appendChild(li);
 
     });
 
 
     updateStats();
+
 }
 
 
-// Add task
+// Add Task
+
 function addTask() {
 
-    const taskText = taskInput.value.trim();
+    const taskText =
+        taskInput.value.trim();
 
 
     if (taskText === "") {
@@ -90,10 +124,42 @@ function addTask() {
 }
 
 
-// Complete task
+// Edit Task
+
+function editTask(index) {
+
+    const newTask =
+        prompt(
+            "Edit your task:",
+            tasks[index].text
+        );
+
+
+    if (
+        newTask !== null &&
+        newTask.trim() !== ""
+    ) {
+
+        tasks[index].text =
+            newTask.trim();
+
+
+        saveTasks();
+
+
+        displayTasks();
+
+    }
+
+}
+
+
+// Complete Task
+
 function completeTask(index) {
 
-    tasks[index].completed = !tasks[index].completed;
+    tasks[index].completed =
+        !tasks[index].completed;
 
 
     saveTasks();
@@ -104,7 +170,8 @@ function completeTask(index) {
 }
 
 
-// Delete task
+// Delete Task
+
 function deleteTask(index) {
 
     tasks.splice(index, 1);
@@ -118,28 +185,32 @@ function deleteTask(index) {
 }
 
 
-// Update task stats
+// Update Statistics
+
 function updateStats() {
 
-    totalTasks.textContent = tasks.length;
+    totalTasks.textContent =
+        tasks.length;
 
 
-    const completed = tasks.filter(
-
-        task => task.completed
-
-    ).length;
-
-
-    completedTasks.textContent = completed;
+    const completed =
+        tasks.filter(
+            task => task.completed
+        ).length;
 
 
-    pendingTasks.textContent = tasks.length - completed;
+    completedTasks.textContent =
+        completed;
+
+
+    pendingTasks.textContent =
+        tasks.length - completed;
 
 }
 
 
-// Show all tasks
+// Show All
+
 function showAll() {
 
     displayTasks(tasks);
@@ -147,65 +218,109 @@ function showAll() {
 }
 
 
-// Show pending tasks
+// Show Pending
+
 function showPending() {
 
-    const pendingTasksList = tasks.filter(
+    const pending =
+        tasks.filter(
+            task => !task.completed
+        );
 
-        task => !task.completed
 
-    );
-
-
-    displayTasks(pendingTasksList);
+    displayTasks(pending);
 
 }
 
 
-// Show completed tasks
+// Show Completed
+
 function showCompleted() {
 
-    const completedTasksList = tasks.filter(
-
-        task => task.completed
-
-    );
-
-
-    displayTasks(completedTasksList);
-
-}
+    const completed =
+        tasks.filter(
+            task => task.completed
+        );
 
 
-// Save tasks
-function saveTasks() {
-
-    localStorage.setItem(
-
-        "tasks",
-
-        JSON.stringify(tasks)
-
-    );
+    displayTasks(completed);
 
 }
 
 
-// Add button click
-addTaskBtn.addEventListener(
+// Search Tasks
 
-    "click",
+searchInput.addEventListener(
+    "input",
+    function () {
 
-    addTask
+        const searchText =
+            searchInput.value.toLowerCase();
 
+
+        const filteredTasks =
+            tasks.filter(
+                function (task) {
+
+                    return task.text
+                        .toLowerCase()
+                        .includes(searchText);
+
+                }
+            );
+
+
+        displayTasks(filteredTasks);
+
+    }
 );
 
 
-// Press Enter to add task
+// Dark Mode
+
+darkModeBtn.addEventListener(
+    "click",
+    function () {
+
+        document.body.classList.toggle(
+            "dark-mode"
+        );
+
+
+        if (
+            document.body.classList.contains(
+                "dark-mode"
+            )
+        ) {
+
+            darkModeBtn.textContent =
+                "☀️";
+
+        }
+
+        else {
+
+            darkModeBtn.textContent =
+                "🌙";
+
+        }
+
+    }
+);
+
+
+// Add Task Button
+
+addTaskBtn.addEventListener(
+    "click",
+    addTask
+);
+
+
+// Enter Key
+
 taskInput.addEventListener(
-
     "keypress",
-
     function (event) {
 
         if (event.key === "Enter") {
@@ -215,9 +330,9 @@ taskInput.addEventListener(
         }
 
     }
-
 );
 
 
-// Display tasks on page load
+// Display Tasks on Page Load
+
 displayTasks();
