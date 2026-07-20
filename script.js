@@ -1,288 +1,180 @@
 const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
+
 const totalTasks = document.getElementById("totalTasks");
 const completedTasks = document.getElementById("completedTasks");
 const pendingTasks = document.getElementById("pendingTasks");
+
 const searchInput = document.getElementById("searchInput");
 const darkModeBtn = document.getElementById("darkModeBtn");
 
-// Load saved tasks
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-let tasks =
-    JSON.parse(
-        localStorage.getItem("tasks")
-    ) || [];
-
-// Display Tasks
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 function displayTasks(taskArray = tasks) {
 
     taskList.innerHTML = "";
-    taskArray.forEach(function (task) {
+
+    taskArray.forEach(function(task) {
 
         const li = document.createElement("li");
 
         li.innerHTML = `
-        
             <span class="${task.completed ? "completed" : ""}">
-
                 ${task.text}
-
             </span>
-    <div>
 
-                <button
-                    class="complete-btn"
+            <div>
+                <button class="complete-btn"
                     onclick="completeTask(${tasks.indexOf(task)})">
-
                     ✓
-                    
-            </button>
+                </button>
 
-             <button
-                    class="edit-btn"
+                <button class="edit-btn"
                     onclick="editTask(${tasks.indexOf(task)})">
-
                     ✏️
-
                 </button>
 
-                <button
-                    class="delete-btn"
+                <button class="delete-btn"
                     onclick="deleteTask(${tasks.indexOf(task)})">
-
                     Delete
-
                 </button>
-
             </div>
-
         `;
 
-
         taskList.appendChild(li);
-
     });
 
     updateStats();
-
 }
-
-// Add Task
 
 function addTask() {
 
-    const taskText =
-        taskInput.value.trim();
+    const taskText = taskInput.value.trim();
 
-  if (taskText === "") {
-
+    if (taskText === "") {
         alert("Please enter a task!");
-
         return;
-
     }
 
-  tasks.push({
-
+    tasks.push({
         text: taskText,
-
         completed: false
-
     });
 
-  saveTasks();
+    saveTasks();
 
-  taskInput.value = "";
+    taskInput.value = "";
 
-  displayTasks();
-
+    displayTasks();
 }
-
-// Edit Task
-
-function editTask(index) {
-
-    const newTask =
-        prompt(
-            "Edit your task:",
-            tasks[index].text
-        );
-
-   if (
-        newTask !== null &&
-        newTask.trim() !== ""
-    ) {
-
-        tasks[index].text =
-            newTask.trim();
-
-       saveTasks();
-
-       displayTasks();
-
-    }
-
-}
-
-// Complete Task
 
 function completeTask(index) {
 
-    tasks[index].completed =
-        !tasks[index].completed;
+    tasks[index].completed = !tasks[index].completed;
 
     saveTasks();
 
     displayTasks();
-
 }
 
-// Delete Task
+function editTask(index) {
+
+    const newTask = prompt(
+        "Edit your task:",
+        tasks[index].text
+    );
+
+    if (newTask !== null && newTask.trim() !== "") {
+
+        tasks[index].text = newTask.trim();
+
+        saveTasks();
+
+        displayTasks();
+    }
+}
 
 function deleteTask(index) {
 
     tasks.splice(index, 1);
 
-   saveTasks();
+    saveTasks();
 
-  displayTasks();
-
+    displayTasks();
 }
-
-// Update Statistics
 
 function updateStats() {
 
-    totalTasks.textContent =
-        tasks.length;
+    totalTasks.textContent = tasks.length;
 
-    const completed =
-        tasks.filter(
-            task => task.completed
-        ).length;
+    const completed = tasks.filter(
+        task => task.completed
+    ).length;
 
-    completedTasks.textContent =
-        completed;
+    completedTasks.textContent = completed;
 
-    pendingTasks.textContent =
-        tasks.length - completed;
-
+    pendingTasks.textContent = tasks.length - completed;
 }
-
-// Show All
 
 function showAll() {
-
     displayTasks(tasks);
-
 }
-
-// Show Pending
 
 function showPending() {
 
-    const pending =
-        tasks.filter(
-            task => !task.completed
-        );
+    const pending = tasks.filter(
+        task => !task.completed
+    );
 
-  displayTasks(pending);
-
+    displayTasks(pending);
 }
-
-// Show Completed
 
 function showCompleted() {
 
-    const completed =
-        tasks.filter(
-            task => task.completed
-        );
+    const completed = tasks.filter(
+        task => task.completed
+    );
 
-  displayTasks(completed);
-
+    displayTasks(completed);
 }
 
-// Search Tasks
+searchInput.addEventListener("input", function() {
 
-searchInput.addEventListener(
-    "input",
-    function () {
+    const searchText = searchInput.value.toLowerCase();
 
-        const searchText =
-            searchInput.value.toLowerCase();
+    const filteredTasks = tasks.filter(function(task) {
 
-        const filteredTasks =
-            tasks.filter(
-                function (task) {
+        return task.text.toLowerCase().includes(searchText);
 
-                    return task.text
-                        .toLowerCase()
-                        .includes(searchText);
+    });
 
-                }
-            );
+    displayTasks(filteredTasks);
+});
 
-  displayTasks(filteredTasks);
+darkModeBtn.addEventListener("click", function() {
 
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        darkModeBtn.textContent = "☀️";
+    } else {
+        darkModeBtn.textContent = "🌙";
     }
-);
+});
 
-// Dark Mode
+addTaskBtn.addEventListener("click", addTask);
 
-darkModeBtn.addEventListener(
-    "click",
-    function () {
+taskInput.addEventListener("keypress", function(event) {
 
-        document.body.classList.toggle(
-            "dark-mode"
-        );
-
-       if (
-            document.body.classList.contains(
-                "dark-mode"
-            )
-        ) {
-
-            darkModeBtn.textContent =
-                "☀️";
-
-        }
-
-        else {
-
-            darkModeBtn.textContent =
-                "🌙";
-
-        }
-
+    if (event.key === "Enter") {
+        addTask();
     }
-);
 
-// Add Task Button
-
-addTaskBtn.addEventListener(
-    "click",
-    addTask
-);
-
-// Enter Key
-
-taskInput.addEventListener(
-    "keypress",
-    function (event) {
-
-        if (event.key === "Enter") {
-
-            addTask();
-
-        }
-
-    }
-);
-
-// Display Tasks on Page Load
+});
 
 displayTasks();
