@@ -1,19 +1,11 @@
 const taskInput = document.getElementById("taskInput");
-
 const addTaskBtn = document.getElementById("addTaskBtn");
-
 const taskList = document.getElementById("taskList");
-
 const totalTasks = document.getElementById("totalTasks");
-
 const completedTasks = document.getElementById("completedTasks");
-
 const pendingTasks = document.getElementById("pendingTasks");
-
 const searchInput = document.getElementById("searchInput");
-
 const darkModeBtn = document.getElementById("darkModeBtn");
-
 
 // Load saved tasks
 
@@ -22,47 +14,39 @@ let tasks =
         localStorage.getItem("tasks")
     ) || [];
 
-
 // Display Tasks
 
 function displayTasks(taskArray = tasks) {
 
     taskList.innerHTML = "";
-
-
     taskArray.forEach(function (task) {
 
         const li = document.createElement("li");
 
-
         li.innerHTML = `
-
+        
             <span class="${task.completed ? "completed" : ""}">
 
                 ${task.text}
 
             </span>
-
-
-            <div>
+    <div>
 
                 <button
                     class="complete-btn"
                     onclick="completeTask(${tasks.indexOf(task)})">
 
                     ✓
+                    
+            </button>
 
-                </button>
-
-
-                <button
+             <button
                     class="edit-btn"
                     onclick="editTask(${tasks.indexOf(task)})">
 
                     ✏️
 
                 </button>
-
 
                 <button
                     class="delete-btn"
@@ -81,11 +65,9 @@ function displayTasks(taskArray = tasks) {
 
     });
 
-
     updateStats();
 
 }
-
 
 // Add Task
 
@@ -94,8 +76,7 @@ function addTask() {
     const taskText =
         taskInput.value.trim();
 
-
-    if (taskText === "") {
+  if (taskText === "") {
 
         alert("Please enter a task!");
 
@@ -103,8 +84,7 @@ function addTask() {
 
     }
 
-
-    tasks.push({
+  tasks.push({
 
         text: taskText,
 
@@ -112,17 +92,13 @@ function addTask() {
 
     });
 
+  saveTasks();
 
-    saveTasks();
+  taskInput.value = "";
 
-
-    taskInput.value = "";
-
-
-    displayTasks();
+  displayTasks();
 
 }
-
 
 // Edit Task
 
@@ -134,8 +110,7 @@ function editTask(index) {
             tasks[index].text
         );
 
-
-    if (
+   if (
         newTask !== null &&
         newTask.trim() !== ""
     ) {
@@ -143,16 +118,13 @@ function editTask(index) {
         tasks[index].text =
             newTask.trim();
 
+       saveTasks();
 
-        saveTasks();
-
-
-        displayTasks();
+       displayTasks();
 
     }
 
 }
-
 
 // Complete Task
 
@@ -161,14 +133,11 @@ function completeTask(index) {
     tasks[index].completed =
         !tasks[index].completed;
 
-
     saveTasks();
-
 
     displayTasks();
 
 }
-
 
 // Delete Task
 
@@ -176,14 +145,11 @@ function deleteTask(index) {
 
     tasks.splice(index, 1);
 
+   saveTasks();
 
-    saveTasks();
-
-
-    displayTasks();
+  displayTasks();
 
 }
-
 
 // Update Statistics
 
@@ -192,22 +158,18 @@ function updateStats() {
     totalTasks.textContent =
         tasks.length;
 
-
     const completed =
         tasks.filter(
             task => task.completed
         ).length;
 
-
     completedTasks.textContent =
         completed;
-
 
     pendingTasks.textContent =
         tasks.length - completed;
 
 }
-
 
 // Show All
 
@@ -216,7 +178,6 @@ function showAll() {
     displayTasks(tasks);
 
 }
-
 
 // Show Pending
 
@@ -227,11 +188,9 @@ function showPending() {
             task => !task.completed
         );
 
-
-    displayTasks(pending);
+  displayTasks(pending);
 
 }
-
 
 // Show Completed
 
@@ -242,11 +201,9 @@ function showCompleted() {
             task => task.completed
         );
 
-
-    displayTasks(completed);
+  displayTasks(completed);
 
 }
-
 
 // Search Tasks
 
@@ -256,7 +213,6 @@ searchInput.addEventListener(
 
         const searchText =
             searchInput.value.toLowerCase();
-
 
         const filteredTasks =
             tasks.filter(
@@ -269,12 +225,10 @@ searchInput.addEventListener(
                 }
             );
 
-
-        displayTasks(filteredTasks);
+  displayTasks(filteredTasks);
 
     }
 );
-
 
 // Dark Mode
 
@@ -286,8 +240,7 @@ darkModeBtn.addEventListener(
             "dark-mode"
         );
 
-
-        if (
+       if (
             document.body.classList.contains(
                 "dark-mode"
             )
@@ -308,14 +261,12 @@ darkModeBtn.addEventListener(
     }
 );
 
-
 // Add Task Button
 
 addTaskBtn.addEventListener(
     "click",
     addTask
 );
-
 
 // Enter Key
 
@@ -331,7 +282,6 @@ taskInput.addEventListener(
 
     }
 );
-
 
 // Display Tasks on Page Load
 
